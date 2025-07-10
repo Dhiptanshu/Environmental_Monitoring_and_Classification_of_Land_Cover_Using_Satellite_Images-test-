@@ -58,7 +58,7 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
     image_resized = image.resize((256, 256))
 
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)  # ✅ fixed deprecated parameter
 
     # Preprocess
     img_array = img_to_array(image_resized) / 255.0
@@ -71,16 +71,16 @@ if uploaded_file is not None:
         confidence = np.max(prediction)
 
     # Display Results
-    st.markdown("""
+    st.markdown(f"""
         <div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 1.5rem; color: white; border-radius: 15px;'>
-            <h3>🎯 Predicted Class: <b>{}</b></h3>
-            <p style='font-size: 1.2rem;'>Confidence: <b>{:.2f}%</b></p>
+            <h3>🎯 Predicted Class: <b>{predicted_class}</b></h3>
+            <p style='font-size: 1.2rem;'>Confidence: <b>{confidence * 100:.2f}%</b></p>
         </div>
-    """.format(predicted_class, confidence * 100), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-    st.progress(confidence)
+    st.progress(int(confidence * 100))  # ✅ fixed type error (expects 0–100 int)
 
     st.markdown("#### 🔍 Class Probabilities")
-    for i, (class_name, prob) in enumerate(zip(CLASS_NAMES, prediction)):
-        st.write(f"{class_name}: {prob*100:.2f}%")
-        st.progress(prob)
+    for class_name, prob in zip(CLASS_NAMES, prediction):
+        st.write(f"{class_name}: {prob * 100:.2f}%")
+        st.progress(int(prob * 100))  # ✅ fixed type error here too
