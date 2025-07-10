@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 
 MODEL_PATH = "model.h5"
-MODEL_URL = "https://drive.google.com/file/d/1GspKyldumkNt3O3a8ZIl0hJpyqBvtLf7/view?usp=drive_link"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1p9pqC-Ba4aKdNcQploHjnaCVip5J07qe"
 
 @st.cache_resource
 def download_and_load_model():
